@@ -10,7 +10,7 @@ pipeline {
         testAgentIp = "172.16.5.70"
         resVerdict = "True"
         mailRecipients = "akhila.moyila@wavelabs.ai"
-    emailext (
+    emailtext (
         mimeType: 'text/html',
         subject: "[Jenkins] ${subject}",
         body: "${details}",
