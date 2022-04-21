@@ -10,17 +10,17 @@ pipeline {
         testAgentIp = "172.16.5.70"
         resVerdict = "True"
         mailRecipients = "akhila.moyila@wavelabs.ai"
-}
+    }
 
-   stage('Send email') {
-      def mailRecipients = "akhila.moyila@wavelabs.ai"
-      def jobName = currentBuild.fullDisplayName
+    stage('Send email') {
+        def mailRecipients = "akhila.moyila@wavelabs.ai"
+        def jobName = currentBuild.fullDisplayName
 
-   emailext body: '''${SCRIPT, template="groovy-html.template"}''',
-       mimeType: 'text/html',
-       subject: "[Jenkins] ${jobName}",
-       to: "${mailRecipients}",
-       replyTo: "${mailRecipients}",
-       recipientProviders: [[$class: 'CulpritsRecipientProvider']]
-}
+    emailext body: '''${SCRIPT, template="groovy-html.template"}''',
+        mimeType: 'text/html',
+        subject: "[Jenkins] ${jobName}",
+        to: "${mailRecipients}",
+        replyTo: "${mailRecipients}",
+        recipientProviders: [[$class: 'CulpritsRecipientProvider']]
+    }
 }
