@@ -5,12 +5,6 @@ pipeline {
         disableConcurrentBuilds();
         timestamps()
     }
-    environment {
-        abot_ip = "172.16.5.60"
-        testAgentIp = "172.16.5.70"
-        resVerdict = "True"
-        mailRecipients = "akhila.moyila@wavelabs.ai"
-    }
     stages {
         stage('Send email') {
             def mailRecipients = "akhila.moyila@wavelabs.ai"
