@@ -17,3 +17,4 @@ pipeline {
         to: "${env.mailRecipients}"
     )
 }
+}
