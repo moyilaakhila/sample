@@ -10,7 +10,7 @@ pipeline {
         testAgentIp = "172.16.5.70"
         resVerdict = "True"
         mailRecipients = "akhila.moyila@wavelabs.ai"
-        BUILD_NUMBER = "f63c570a"
+        currentDate = sh(returnStdout: true, script: 'date +%Y-%m-%d').trim()
     }
   stages {
     stage ('Run') {
@@ -43,19 +43,78 @@ pipeline {
         }
     } 
     stage ('Date') {
-      /
+         steps {
+                build job: "Release Helpers/(TEST) Schedule Release Job2",
+                parameters: [
+                    [$class: 'StringParameterValue', name: 'ReleaseDate', value: "${currentDate}"]
+         
+                ]
+            }
     }
-    stage ('Status') {
-      
-    }
-    stage ('Test case ID') {
-      
-    }
-    stage ('Test case name') {
-      
-    }
-    stage ('Test cases status') {
-      
+  
+    stage ('Test case ID,name,status') {
+      steps {
+                script {
+                    try {
+                        def lastArtTimeStampurl = "http://${abot_ip}:5000" + '/abot/api/v5/latest_artifact_name'
+                        def lastArtTimeStampparams = ""
+                        lastArtTimeStamp = sendRestReq(lastArtTimeStampurl, 'GET', lastArtTimeStampparams, 'application/json')
+                        lastArtTimeStamp = readJSON text: lastArtTimeStamp.content
+                        echo lastArtTimeStamp.data.latest_artifact_timestamp.toString()
+                        lastArtTimeStamp = lastArtTimeStamp.data.latest_artifact_timestamp.toString()
+
+                        if (ffArtifactURL (lastArtTimeStamp)) {
+                            sleep 10
+                        }
+                        fileUrl = ffArtifactURL (lastArtTimeStamp)
+                        timeout(5) {
+                            waitUntil(initialRecurrencePeriod: 15000) {
+                                def statusCode = ""
+                                try {
+                                    statusCode = sh(script: "curl -o /dev/null -s -w '%{http_code}\\n' ${fileUrl}", returnStdout: true).trim()
+                                    if ( statusCode == "200" ) {
+                                        sh(script: "curl ${fileUrl} -o testArtifact.zip", returnStdout: true)
+                                        return true 
+                                    } else {
+                                        println "Artifact is not ready, http status code is : ${statusCode}"
+                                        return false
+                                    }
+                                } catch (exception) {
+                                    println exception
+                                    return false
+                                }
+                            }
+                        }
+                        //sh(returnStdout: true, script: """curl ${fileUrl} -o testArtifact.zip""")
+                        sh(returnStdout: true, script: """if [ ! -d testArtifact ]; then mkdir testArtifact; fi""")
+                        sh(script: "unzip testArtifact.zip -d testArtifact", retrunStdout: true)
+                        //unzip dir: 'testArtifact', glob: '', zipFile: 'testArtifact.zip'
+                        uploadLogsToGit(packageVersion)
+                        def getResulturl = "http://${abot_ip}:5000" + "/abot/api/v5/artifacts/execFeatureSummary?foldername=${lastArtTimeStamp}"
+                        def getResultparams = ""
+                        getResult = sendRestReq(getResulturl, 'GET', getResultparams, 'application/json')
+                        getResult = readJSON text: getResult.content
+                        for ( res in getResult.feature_summary.result.data) {
+                            if (res.features.status == "failed" ) {
+                                resVerdict = "False"
+                            }
+                        }
+                        sh(returnStdout: true, script: """if [ ! -d testResult ]; then mkdir testResult; fi""")
+                        writeFile file: 'testResult/test_verdict', text: resVerdict
+                        def tableBody = readFile("config_files/test_report.html")
+                        def headHtml = readFile("config_files/test_report_first_part.html")
+                        def ffMappingData = readJSON file: "config_files/tc_mapping.json"
+                        createHtmlTableBody (ffMappingData, getResult, tableBody, headHtml, packageVersion)
+                    } catch (err) {
+                        println err
+                        //currentBuild.result = "FAILED"
+                        //deleteDir()
+                        //notifyBuild('FAILED')
+                        //error err
+                    } 
+                }
+            }
+        }
     }
     def sendRestReq(def url, def method = 'GET', def data = null, type = null, headerKey = null, headerVal = null) {
     try{
