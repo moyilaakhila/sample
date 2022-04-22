@@ -10,6 +10,7 @@ pipeline {
         testAgentIp = "172.16.5.70"
         resVerdict = "True"
         mailRecipients = "akhila.moyila@wavelabs.ai"
+        BUILD_NUMBER = "f63c570a"
     }
   stages {
     stage ('Run') {
