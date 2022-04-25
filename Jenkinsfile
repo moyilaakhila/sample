@@ -44,7 +44,6 @@ pipeline {
                 build job: "Release Helpers/(TEST) Schedule Release Job2",
                 parameters: [
                     [$class: 'StringParameterValue', name: 'ReleaseDate', value: "${currentDate}"]
-         
                 ]
             }
     }
@@ -160,11 +159,9 @@ def uploadLogsToGit (packageVersion) {
         }
     }
 }
-
 def notifyBuild(String buildStatus = 'STARTED') {
     def details = ""
     buildStatus = buildStatus ?: 'SUCCESS'
-
     def subject = "Job '${env.JOB_NAME}': ${buildStatus} for the AGW artifact ID - ${packageVersion}"
     if (buildStatus == 'STARTED') {
         details = """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p><p>Check console output at &QUOT;<a href='${env.BUILD_URL}/console'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
