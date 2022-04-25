@@ -13,9 +13,6 @@ pipeline {
         currentDate = sh(returnStdout: true, script: 'date +%Y-%m-%d').trim()
     }
   stages {
-    stage ('Run') {
-        
-    }
     stage ('Build') {
         steps {
                 script {
