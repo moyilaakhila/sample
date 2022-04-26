@@ -3,9 +3,9 @@ pipeline {
         label 'abot-test'
     }
     parameters {
-        /*string(name: 'ARTIFACTID', defaultValue: 'https://artifactory.magmacore.org/artifactory/debian-test/pool/focal-ci/magma_1.7.0-1637259345-3c88ec27_amd64.deb', description: 'Download URL to the Deb package')
+        string(name: 'ARTIFACTID', defaultValue: 'https://artifactory.magmacore.org/artifactory/debian-test/pool/focal-ci/magma_1.7.0-1637259345-3c88ec27_amd64.deb', description: 'Download URL to the Deb package')
         string(name: 'TestCaseName', defaultValue: 'magma-5g', description: 'Mention the test Case that you want to execute.')
-        string(name: 'agwIp', defaultValue: '192.16.3.144', description: 'eth0 IP of your AGW instance.') */
+        string(name: 'agwIp', defaultValue: '192.16.3.144', description: 'eth0 IP of your AGW instance.')
     }
     options {
         buildDiscarder(logRotator(daysToKeepStr: '0'))
@@ -116,8 +116,8 @@ pipeline {
             }
         }
     }
-    def SendRestReq(def url, def method = 'GET', def data = null, type = null, headerKey = null, headerVal = null) {
-    try{
+    def sendRestReq (def url, def method = 'GET', def data = null, type = null, headerKey = null, headerVal = null) {
+    try {
         def response = null
         if (null == url || url.toString().trim().isEmpty()) return response
         method = method.toUpperCase()
