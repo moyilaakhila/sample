@@ -116,8 +116,8 @@ pipeline {
             }
         }
     }
-    def sendRestReq (def url, def method = 'GET', def data = null, type = null, headerKey = null, headerVal = null) {
-    try {
+def sendRestReq(def url, def method = 'GET', def data = null, type = null, headerKey = null, headerVal = null) {
+  try {
         def response = null
         if (null == url || url.toString().trim().isEmpty()) return response
         method = method.toUpperCase()
@@ -148,7 +148,6 @@ pipeline {
         return null
     }
 }
-
 def uploadLogsToGit (packageVersion) {
     sh(returnStdout: true, script: """if [ ! -d firebaseagentrepo ]; then mkdir firebaseagentrepo; fi""")
     dir ('firebaseagentrepo') {
