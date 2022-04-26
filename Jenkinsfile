@@ -180,4 +180,6 @@ def notifyBuild(String buildStatus = 'STARTED') {
         body: "${details}",
         to: "${env.mailRecipients}"
     )
-}
+  }
+ }
+}    
