@@ -116,7 +116,7 @@ pipeline {
             }
         }
     }
-    def sendRestReq(def url, def method = 'GET', def data = null, type = null, headerKey = null, headerVal = null) {
+    def SendRestReq(def url, def method = 'GET', def data = null, type = null, headerKey = null, headerVal = null) {
     try{
         def response = null
         if (null == url || url.toString().trim().isEmpty()) return response
