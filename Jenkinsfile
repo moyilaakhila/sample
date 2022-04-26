@@ -1,6 +1,6 @@
 pipeline {
-    agent {
-        label 'abot-test'
+    agent any {
+    
     }
     parameters {
         string(name: 'ARTIFACTID', defaultValue: 'https://artifactory.magmacore.org/artifactory/debian-test/pool/focal-ci/magma_1.7.0-1637259345-3c88ec27_amd64.deb', description: 'Download URL to the Deb package')
