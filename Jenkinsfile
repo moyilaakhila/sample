@@ -44,17 +44,17 @@ pipeline {
             }
         }
     } 
-    stage ('Date') {
-         steps {
-                build job: "Release Helpers/(TEST) Schedule Release Job2",
+     stage ('Date') {
+        steps {
+          build job: "Release Helpers/(TEST) Schedule Release Job2",
                 parameters: [
                     [$class: 'StringParameterValue', name: 'ReleaseDate', value: "${currentDate}"]
                 ]
             }
     }
   
-    stage ('Test case ID,name,status') {
-      steps {
+     stage ('Test case ID,name,status') {
+        steps {
                 script {
                     try {
                         def lastArtTimeStampurl = "http://${abot_ip}:5000" + '/abot/api/v5/latest_artifact_name'
