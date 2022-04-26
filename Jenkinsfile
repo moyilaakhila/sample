@@ -1,25 +1,27 @@
 pipeline {
-    agent { label 'abot-test' }
-     parameters {
-        string(name: 'ARTIFACTID', defaultValue: 'https://artifactory.magmacore.org/artifactory/debian-test/pool/focal-ci/magma_1.7.0-1637259345-3c88ec27_amd64.deb', description: 'Download URL to the Deb package')
-        string(name: 'TestCaseName', defaultValue: 'magma-5g', description: 'Mention the test Case that you want to execute.')
-        string(name: 'agwIp', defaultValue: '192.16.3.144', description: 'eth0 IP of your AGW instance.')
+    agent {
+        label 'abot-test'
     }
-     options {
-        buildDiscarder(logRotator(daysToKeepStr: '0'));
-        disableConcurrentBuilds();
+    parameters {
+        /*string(name: 'ARTIFACTID', defaultValue: 'https://artifactory.magmacore.org/artifactory/debian-test/pool/focal-ci/magma_1.7.0-1637259345-3c88ec27_amd64.deb', description: 'Download URL to the Deb package')
+        string(name: 'TestCaseName', defaultValue: 'magma-5g', description: 'Mention the test Case that you want to execute.')
+        string(name: 'agwIp', defaultValue: '192.16.3.144', description: 'eth0 IP of your AGW instance.') */
+    }
+    options {
+        buildDiscarder(logRotator(daysToKeepStr: '0'))
+        disableConcurrentBuilds()
         timestamps()
     }
     environment {
-        abot_ip = "172.16.5.60"
-        testAgentIp = "172.16.5.70"
-        resVerdict = "True"
-        mailRecipients = "akhila.moyila@wavelabs.ai"
+        abot_ip = '172.16.5.60'
+        testAgentIp = '172.16.5.70'
+        resVerdict = 'True'
+        mailRecipients = 'akhila.moyila@wavelabs.ai'
         currentDate = sh(returnStdout: true, script: 'date +%Y-%m-%d').trim()
     }
-  stages {
-    stage ('Build') {
-        steps {
+    stages {
+        stage ('Build') {
+            steps {
                 script {
                     try {
                         sh "rm -rf ansible/agw_ansible_hosts"
@@ -42,19 +44,16 @@ pipeline {
                     }
                 }
             }
-        }
-    } 
-     stage ('Date') {
-        steps {
-          build job: "Release Helpers/(TEST) Schedule Release Job2",
+        stage ('Date') {
+            steps {
+            build job: "Release Helpers/(TEST) Schedule Release Job2",
                 parameters: [
                     [$class: 'StringParameterValue', name: 'ReleaseDate', value: "${currentDate}"]
                 ]
             }
-    }
-  
-     stage ('Test case ID,name,status') {
-        steps {
+        }
+        stage ('Test case ID,name,status') {
+            steps {
                 script {
                     try {
                         def lastArtTimeStampurl = "http://${abot_ip}:5000" + '/abot/api/v5/latest_artifact_name'
@@ -181,4 +180,5 @@ def notifyBuild(String buildStatus = 'STARTED') {
         body: "${details}",
         to: "${env.mailRecipients}"
     )
-} 
+    }
+}
