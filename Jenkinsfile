@@ -14,7 +14,7 @@ pipeline {
         abot_ip = "172.16.5.60"
         testAgentIp = "172.16.5.70"
         resVerdict = "True"
-        mailRecipients = "testing@wavelabs.ai"
+        mailRecipients = "akhila.moyila@wavelabs.ai"
     }
     stages {
         stage ('Deploy and upgrade AGW') {
@@ -255,8 +255,8 @@ def uploadLogsToGit (packageVersion) {
         git "https://github.com/wavelabsai/firebaseagentreport.git"
         sh "cp ../testArtifact/logs/sut-logs/magma-epc/AMF1/mme.log mme-${packageVersion}.log"
         sh "cp ../testArtifact/logs/sut-logs/magma-epc/AMF1/syslog syslog-${packageVersion}"
-        sh "git config user.email 'tapas.mishra@wavelabs.ai'"
-        sh "git config user.name 'Tapas Mishra'"
+        sh "git config user.email 'akhila.moyila@wavelabs.ai'"
+        sh "git config user.name 'akhilamoyila'"
         sh "git add . && git commit -am 'Adding report files for the version ${packageVersion}'"
         withCredentials([gitUsernamePassword(credentialsId: 'github_token', gitToolName: 'Default')]) {
             sh "git push --set-upstream origin master"
