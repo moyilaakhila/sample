@@ -1,145 +1,74 @@
 pipeline {
-    agent any
+    agent { label 'agw-build' }
     parameters {
-        string(name: 'ARTIFACTID', defaultValue: 'https://artifactory.magmacore.org/artifactory/debian-test/pool/focal-ci/magma_1.7.0-1640745493-d0ca0d93_amd64.deb', description: 'Download URL to the Deb package')
-        booleanParam(name: 'UPGRADE', defaultValue: true, description: 'Do you want to upgrade to 5G version of AGW?')
-        booleanParam(name: 'ABotInt', defaultValue: true, description: 'Do you want to Integrate ABot Test framework?')
+        string(name: 'ARTIFACTID', defaultValue: 'https://artifactory.magmacore.org/artifactory/debian-test/pool/focal-ci/magma_1.7.0-1637259345-3c88ec27_amd64.deb', description: 'Download URL to the Deb package')
         string(name: 'TestCaseName', defaultValue: 'magma-5g', description: 'Mention the test Case that you want to execute.')
+        string(name: 'agwIp', defaultValue: '192.16.3.144', description: 'eth0 IP of your AGW instance.')
     }
     options {
-        buildDiscarder(logRotator(numToKeepStr: '3'));
+        buildDiscarder(logRotator(daysToKeepStr: '2'));
+        disableConcurrentBuilds();
         timestamps()
     }
     environment {
-        prefix= "${JOB_BASE_NAME}-${BUILD_NUMBER}"
-        admin_operator_key_pem = credentials('admin_operator_key_pem')
-        admin_operator_pem = credentials('admin_operator_pem')
-        abot_ip = "172.16.6.184"
+        abot_ip = "172.16.5.60"
+        testAgentIp = "172.16.5.70"
+        resVerdict = "True"
+        mailRecipients = "testing@wavelabs.ai"
     }
     stages {
-        stage ('Create the Infra') {
-            steps {
-                script {
-                    try {
-                        withCredentials([usernamePassword(credentialsId: 'openstack_user_password', passwordVariable: 'OPENSTACK_PASSWORD', usernameVariable: 'OPENSTACK_USER')]) {
-                            dir('terraform') {
-                                sh ("terraform init -var='openstack_password=${OPENSTACK_PASSWORD}' -var='prefix=${env.prefix}' -input=false")
-                                sh ("terraform apply -var='openstack_password=${OPENSTACK_PASSWORD}' -var='prefix=${env.prefix}' -auto-approve")
-                                sh "chmod 0600 ssh-keys/id_ed25519"
-                            }
-                        }
-                    } catch (err) {
-                        echo err.getMessage()
-                        withCredentials([usernamePassword(credentialsId: 'openstack_user_password', passwordVariable: 'OPENSTACK_PASSWORD', usernameVariable: 'OPENSTACK_USER')]) {
-                            dir('terraform') {
-                                sh ("terraform destroy -var='openstack_password=${OPENSTACK_PASSWORD}' -var='prefix=${env.prefix}' -auto-approve")
-                                archiveArtifacts artifacts: 'terraform.tfstate'
-                            }
-                        }
-                        error "Error detected, we will exit here."
-                    } finally {
-                        dir('terraform') {
-                            archiveArtifacts artifacts: 'terraform.tfstate'
-                        }                                                                                                                                                                                                                       
-                    }
-                }
-
-            }
-        }
         stage ('Deploy and upgrade AGW') {
             steps {
                 script {
-                    def packageVersion = parseUrl(params.ARTIFACTID)
-                    if (params.UPGRADE) {
+                    try {
+                        def ansibleInventory = """{all: {hosts: 172}}"""
+                        ansInvData = readYaml text: ansibleInventory
+                        ansInvData.all.hosts = params.agwIp
+                        sh(returnStdout: true, script: """if [ -f ansible/agw_ansible_hosts ]; then rm -rf ansible/agw_ansible_hosts; fi""")
+                        writeYaml charset: '', data: ansInvData, file: 'ansible/agw_ansible_hosts'
+                        def packageVersion = parseUrl(params.ARTIFACTID)
+                        sh "chmod 0600 terraform/ssh-keys/id_ed25519"
+                        notifyBuild('STARTED')
                         dir('ansible') {
-                            sh "ansible-playbook agw_deploy.yaml --extra-vars \'magma5gVersion=${packageVersion}\'"
+                            sh "ansible-playbook agw_deploy.yaml --extra-vars \'magma5gVersion=${packageVersion}\' --skip-tags [baseInstall,setupInterface,addUser]"
                         }
-                    } else {
-                        dir('ansible') {
-                            sh "ansible-playbook agw_deploy.yaml --skip-tags upgrade5gVersion"
-                        }
-                    }
-                }
-            }
-        }
-        stage ('Configure NMS Dashboard') {
-            steps {
-                dir('ansible') {
-                    sh "ansible-playbook agw_info.yaml"
-                }
-                script {
-                    // Hardcoding the network name for a temporary basis unit the nework creat REST api is fixed. 
-                    //def network_name = env.prefix + "_lte_network"
-                    def network_name = "ubuntu_agw_6_186"
-                    def agw_name = env.prefix + "_5g_agw"
-                    /*
-                    Currently we are having issue with tier while creating the networking using REST api.
-
-                    def lteNetworkData = readJSON file: "./config_files/lte_network.json"
-                    lteNetworkData.description = "5G Network automation by Jenkins"
-                    lteNetworkData.id = network_name
-                    lteNetworkData.name = network_name
-                    creatNetworkPostMethod(lteNetworkData)
-                    */
-                    def agwData = readJSON file: "./config_files/agw_data.json"
-                    def agw_hardware_id = readFile('./ansible/agw_hw_key.info').trim()
-                    def agw_chl_key = readFile('./ansible/agw_chl_key.info').trim()
-                    agwData.description = "5G Network automation by Jenkins"
-                    agwData.device.hardware_id = agw_hardware_id
-                    agwData.device.key.key = agw_chl_key
-                    agwData.id = agw_name
-                    agwData.name = agw_name
-                    add5gAgwPostMethod (network_name, agwData)
-                }
-            }
-        }
-        stage ('Configure ABot with new MME IP and AGW VM') {
-            when { expression { return params.ABotInt } }
-            steps {
-                script {
-                    dir('ansible') {
-                        sh "ansible-playbook agw_configure_abot.yaml"
-                    }
-                    ipDataFromJson = readYaml file: 'ansible/agw_ansible_hosts'
-                    mmeIP = ipDataFromJson.all.vars.eth1
-                    def url = "http://${abot_ip}:5000" + '/abot/api/v5/update_config_properties?filename=/etc/rebaca-test-suite/config/magma/nodes-all.properties'
-                    def params = "{\"update\":{\"MME1.SecureShell.IPAddress\":\"${mmeIP}\"}}"
-                    configChangeSta = sendRestReq(url, 'POST', params, 'application/json')
-                    configChangeSta = readJSON text: configChangeSta.content
-                    if ( configChangeSta.Status.toString() != "OK" ) {
-                        error "Error configuring the MME IP in ABot."
-                    }
+                    } catch (err) {
+                        println err
+                        currentBuild.result = "FAILED"
+                        deleteDir()
+                        notifyBuild('FAILED')
+                        error err
+                    } 
                 }
             }
         }
         stage ('Execute Feature File') {
-            when { expression { return params.ABotInt } }
             steps {
                 script {
-                    def execStatus = true
-                    def runFeatureFileurl = "http://${abot_ip}:5000" + '/abot/api/v5/feature_files/execute'
-                    def runFeatureFileparams = "{\"params\": \"${params.TestCaseName}\"}"
-                    runFeatureFile = sendRestReq(runFeatureFileurl, 'POST', runFeatureFileparams, 'application/json')
-                    runFeatureFile = readJSON text: runFeatureFile.content
-                    runFeatureFile = runFeatureFile.status.toString()
-                    if ( runFeatureFile == "OK" ) {
-                        while (execStatus) {
-                            def execStatusurl = "http://${abot_ip}:5000" + '/abot/api/v5/execution_status'
-                            def execStatusparams = ""
-                            execStatus = sendRestReq(execStatusurl, 'GET', execStatusparams, 'application/json')
-                            execStatus = readJSON text: execStatus.content
-                            execStatus = execStatus.status
-                            println "Executing Feature Files: "
-                            sleep time: 30, unit: 'SECONDS'
+                    try {
+                        def execStatus = true
+                        FeatueFileExecStatus (execStatus)
+                        def runFeatureFileurl = "http://${abot_ip}:5000" + '/abot/api/v5/feature_files/execute'
+                        def runFeatureFileparams = "{\"params\": \"${params.TestCaseName}\"}"
+                        runFeatureFile = sendRestReq(runFeatureFileurl, 'POST', runFeatureFileparams, 'application/json')
+                        runFeatureFile = readJSON text: runFeatureFile.content
+                        runFeatureFile = runFeatureFile.status.toString()
+                        if ( runFeatureFile == "OK" ) {
+                            FeatueFileExecStatus (execStatus)
+                        } else {
+                            error "Error running Feature files."
                         }
-                    } else {
-                        error "Error running Feature files."
+                    } catch (err) {
+                        println err
+                        currentBuild.result = "FAILED"
+                        deleteDir()
+                        notifyBuild('FAILED')
+                        error err
                     }
                 }
             }
         }
         stage ('Get test result info and download') {
-            when { expression { return params.ABotInt } }
             steps {
                 script {
                     try {
@@ -149,58 +78,79 @@ pipeline {
                         lastArtTimeStamp = readJSON text: lastArtTimeStamp.content
                         echo lastArtTimeStamp.data.latest_artifact_timestamp.toString()
                         lastArtTimeStamp = lastArtTimeStamp.data.latest_artifact_timestamp.toString()
-                        def lastArtUrlurl = "http://${abot_ip}:5000" + "/abot/api/v5/artifacts/download?artifact_name=${lastArtTimeStamp}"
-                        def lastArtUrlparams = ""
-                        lastArtUrl = sendRestReq(lastArtUrlurl, 'GET', lastArtUrlparams, 'application/json')
-                        lastArtUrl = readJSON text: lastArtUrl.content
-                        fileUrl = lastArtUrl.result.toString()
-                        sh(returnStdout: true, script: """curl ${fileUrl} -o testArtifact.zip""")
+
+                        if (ffArtifactURL (lastArtTimeStamp)) {
+                            sleep 10
+                        }
+                        fileUrl = ffArtifactURL (lastArtTimeStamp)
+                        timeout(5) {
+                            waitUntil(initialRecurrencePeriod: 15000) {
+                                def statusCode = ""
+                                try {
+                                    statusCode = sh(script: "curl -o /dev/null -s -w '%{http_code}\\n' ${fileUrl}", returnStdout: true).trim()
+                                    if ( statusCode == "200" ) {
+                                        sh(script: "curl ${fileUrl} -o testArtifact.zip", returnStdout: true)
+                                        return true 
+                                    } else {
+                                        println "Artifact is not ready, http status code is : ${statusCode}"
+                                        return false
+                                    }
+                                } catch (exception) {
+                                    println exception
+                                    return false
+                                }
+                            }
+                        }
+                        //sh(returnStdout: true, script: """curl ${fileUrl} -o testArtifact.zip""")
                         sh(returnStdout: true, script: """if [ ! -d testArtifact ]; then mkdir testArtifact; fi""")
-                        unzip dir: 'testArtifact', glob: '', zipFile: 'testArtifact.zip'
+                        sh(script: "unzip testArtifact.zip -d testArtifact", retrunStdout: true)
+                        //unzip dir: 'testArtifact', glob: '', zipFile: 'testArtifact.zip'
+                        uploadLogsToGit(packageVersion)
                         def getResulturl = "http://${abot_ip}:5000" + "/abot/api/v5/artifacts/execFeatureSummary?foldername=${lastArtTimeStamp}"
                         def getResultparams = ""
                         getResult = sendRestReq(getResulturl, 'GET', getResultparams, 'application/json')
                         getResult = readJSON text: getResult.content
+                        for ( res in getResult.feature_summary.result.data) {
+                            if (res.features.status == "failed" ) {
+                                resVerdict = "False"
+                            }
+                        }
+                        sh(returnStdout: true, script: """if [ ! -d testResult ]; then mkdir testResult; fi""")
+                        writeFile file: 'testResult/test_verdict', text: resVerdict
                         def tableBody = readFile("config_files/test_report.html")
-                        createHtmlTableBody (getResult, tableBody)                        
+                        def headHtml = readFile("config_files/test_report_first_part.html")
+                        def ffMappingData = readJSON file: "config_files/tc_mapping.json"
+                        createHtmlTableBody (ffMappingData, getResult, tableBody, headHtml, packageVersion)
                     } catch (err) {
                         println err
+                        //currentBuild.result = "FAILED"
                         //deleteDir()
+                        //notifyBuild('FAILED')
+                        //error err
                     } 
                 }
             }
         }
         stage ('Sync ABot test reports to Test Agent') {
-            when { expression { return params.ABotInt } }
-            steps {
-                dir ('ansible') {
-                    sh "ansible-playbook -i 192.16.0.7 transfer_test_result.yaml"
-                }
-            }
-        }
-        stage("Input Stage for Infra Destroy") {
             steps {
                 script {
-                    env.DELETE_INFRA = input message: 'User input required', ok: 'Destroy!',
-                            parameters: [choice(name: 'DELETE_INFRA', choices: 'yes\nno', description: 'Do you want to delete the infra or not?')]
-                }
-            }
-        }
-        stage("Destroy the infra") {
-            steps {
-                script{
                     try {
-                        if (env.DELETE_INFRA == "yes") {
-                            withCredentials([usernamePassword(credentialsId: 'openstack_user_password', passwordVariable: 'OPENSTACK_PASSWORD', usernameVariable: 'OPENSTACK_USER')]) {
-                                dir('terraform') {
-                                    sh ("terraform destroy -var='openstack_password=${OPENSTACK_PASSWORD}' -var='prefix=${env.prefix}' -auto-approve")
-                                }
-                            }
+                        sh "rm -rf ansible/agw_ansible_hosts"
+                        def ansibleInventory = """{all: {hosts: 172}}"""
+                        ansInvData = readYaml text: ansibleInventory
+                        ansInvData.all.hosts = testAgentIp
+                        writeYaml charset: '', data: ansInvData, file: 'ansible/agw_ansible_hosts'
+                        dir ('ansible') {
+                            sh "ansible-playbook transfer_test_result.yaml"
                         }
+                        currentBuild.result = "SUCCESS"
                     } catch (err) {
-                        echo err.getMessage()
-                        echo "Error detected, but we will continue." 
+                        println err
+                        deleteDir()
+                        notifyBuild('FAILED')
+                        error err
                     } finally {
+                        notifyBuild(currentBuild.result)
                         deleteDir()
                     }
                 }
@@ -209,20 +159,29 @@ pipeline {
     }
 }
 
-def creatNetworkPostMethod (data) {
-    def jsonData = data.toString()
-    sh """
-    curl -k --insecure --cert ${admin_operator_pem} --key ${admin_operator_key_pem} -X 'POST' 'https://api.magmasi.wavelabs.in/magma/v1/lte' \
-    -H 'accept: application/json' -H 'Content-Type: application/json' -d '${jsonData}'
-    """
+def ffArtifactURL (lastArtTimeStamp) {
+    def lastArtUrlurl = "http://${abot_ip}:5000" + "/abot/api/v5/artifacts/download?artifact_name=${lastArtTimeStamp}"
+    def lastArtUrlparams = ""
+    lastArtUrl = sendRestReq(lastArtUrlurl, 'GET', lastArtUrlparams, 'application/json') 
+    lastArtUrl = readJSON text: lastArtUrl.content
+    println lastArtUrl.toString()
+    fileUrl = lastArtUrl.result.toString()
+    fileUrlstatus = lastArtUrl.status.toString()
+    if (fileUrlstatus == 'OK') {
+        return fileUrl
+    } 
 }
 
-def add5gAgwPostMethod (networkName, data) {
-    def jsonData = data.toString()
-    sh """
-    curl -k --insecure --cert ${admin_operator_pem} --key ${admin_operator_key_pem} -X 'POST' 'https://api.magmasi.wavelabs.in/magma/v1/lte/${networkName}/gateways' \
-    -H 'accept: application/json' -H 'Content-Type: application/json' -d '${jsonData}'
-    """
+def FeatueFileExecStatus (execStatus) {
+    while (execStatus) {
+        def execStatusurl = "http://${abot_ip}:5000" + '/abot/api/v5/execution_status'
+        def execStatusparams = ""
+        execStatus = sendRestReq(execStatusurl, 'GET', execStatusparams, 'application/json')
+        execStatus = readJSON text: execStatus.content
+        execStatus = execStatus.status
+        println "Executing Feature Files: ${params.TestCaseName}"
+        sleep time: 20, unit: 'SECONDS'
+    }
 }
 
 def parseUrl (url) {
@@ -234,11 +193,27 @@ def parseUrl (url) {
 }
 
 @NonCPS
-def createHtmlTableBody (jsonData, html) {
+def createHtmlTableBody (ffMappingData, jsonData, html, html1, packageVersion) {
+    ffMappingData.each { ffName, data ->
+        jsonData.feature_summary.result.data.each { 
+            if ( it.featureName == ffName ) {
+                it.featureName = it.featureName.minus(".feature")
+                it.mgmaTcType = data.Tctype
+                it.magmaTestId = data.testid
+                if ( it.features.status.equalsIgnoreCase("passed") ) {
+                    it.features.status = "PASS"
+                } else {
+                    it.features.status = "FAIL"
+                }
+            }
+        }
+    }
+    jsonData.feature_summary.result.data = jsonData.feature_summary.result.data.sort { it.mgmaTcType }
     def engine = new groovy.text.SimpleTemplateEngine()
-    def htmlText = engine.createTemplate(html).make([jsonData: jsonData])
-    println htmlText.toString()
-    writeFile file: 'testArtifact/logs/sut-logs/magma-epc/MME1/index.html', text: htmlText.toString()
+    def htmlText = engine.createTemplate(html).make([jsonData: jsonData, packageVersion: packageVersion])
+    fullhtml = html1.toString() + htmlText.toString()
+    println fullhtml
+    writeFile file: 'testResult/index.html', text: fullhtml
 }
 
 def sendRestReq(def url, def method = 'GET', def data = null, type = null, headerKey = null, headerVal = null) {
@@ -272,4 +247,39 @@ def sendRestReq(def url, def method = 'GET', def data = null, type = null, heade
     } catch(Exception ex) {
         return null
     }
+}
+
+def uploadLogsToGit (packageVersion) {
+    sh(returnStdout: true, script: """if [ ! -d firebaseagentrepo ]; then mkdir firebaseagentrepo; fi""")
+    dir ('firebaseagentrepo') {
+        git "https://github.com/wavelabsai/firebaseagentreport.git"
+        sh "cp ../testArtifact/logs/sut-logs/magma-epc/AMF1/mme.log mme-${packageVersion}.log"
+        sh "cp ../testArtifact/logs/sut-logs/magma-epc/AMF1/syslog syslog-${packageVersion}"
+        sh "git config user.email 'tapas.mishra@wavelabs.ai'"
+        sh "git config user.name 'Tapas Mishra'"
+        sh "git add . && git commit -am 'Adding report files for the version ${packageVersion}'"
+        withCredentials([gitUsernamePassword(credentialsId: 'github_token', gitToolName: 'Default')]) {
+            sh "git push --set-upstream origin master"
+        }
+    }
+}
+
+def notifyBuild(String buildStatus = 'STARTED') {
+    def details = ""
+    buildStatus = buildStatus ?: 'SUCCESS'
+
+    def subject = "Job '${env.JOB_NAME}': ${buildStatus} for the AGW artifact ID - ${packageVersion}"
+    if (buildStatus == 'STARTED') {
+        details = """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p><p>Check console output at &QUOT;<a href='${env.BUILD_URL}/console'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
+    } else if (buildStatus == 'SUCCESS') {
+        details = """<p>COMPLETED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p><p>Check console output at &QUOT;<a href='${env.BUILD_URL}/console'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
+    } else {
+        details = """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p><p>Check console output at &QUOT;<a href='${env.BUILD_URL}/console'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
+    }
+    emailext (
+        mimeType: 'text/html',
+        subject: "[Jenkins] ${subject}",
+        body: "${details}",
+        to: "${env.mailRecipients}"
+    )
 }
