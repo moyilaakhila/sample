@@ -24,12 +24,12 @@ pipeline {
                         def lastArtTimeStampurl = "http://${abot_ip}:5000" + '/abot/api/v5/latest_artifact_name'
                         def lastArtTimeStampparams = ""
                         lastArtTimeStamp = sendRestReq(lastArtTimeStampurl, 'GET', lastArtTimeStampparams, 'application/json')
-                        /*lastArtTimeStamp = readJSON text: lastArtTimeStamp.content*/
+                        /*lastArtTimeStamp = readJSON text: lastArtTimeStamp.content
                         echo lastArtTimeStamp.data.latest_artifact_timestamp.toString()
                         lastArtTimeStamp = lastArtTimeStamp.data.latest_artifact_timestamp.toString()
 
                         if (ffArtifactURL (lastArtTimeStamp)) {
-                            sleep 10
+                            sleep 10 */
                         }
                         fileUrl = ffArtifactURL (lastArtTimeStamp)
                         timeout(5) {
