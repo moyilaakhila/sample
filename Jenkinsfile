@@ -17,32 +17,6 @@ pipeline {
         mailRecipients = "akhila.moyila@wavelabs.ai"
     }
     stages {
-        stage ('Execute Feature File') {
-            steps {
-                script {
-                    try {
-                        def execStatus = true
-                        FeatueFileExecStatus (execStatus)
-                        def runFeatureFileurl = "http://${abot_ip}:5000" + '/abot/api/v5/feature_files/execute'
-                        def runFeatureFileparams = "{\"params\": \"${params.TestCaseName}\"}"
-                        runFeatureFile = sendRestReq(runFeatureFileurl, 'POST', runFeatureFileparams, 'application/json')
-                        runFeatureFile = readJSON text: runFeatureFile.content
-                        runFeatureFile = runFeatureFile.status.toString()
-                        if ( runFeatureFile == "OK" ) {
-                            FeatueFileExecStatus (execStatus)
-                        } else {
-                            error "Error running Feature files."
-                        }
-                    } catch (err) {
-                        println err
-                        currentBuild.result = "FAILED"
-                        deleteDir()
-                        notifyBuild('FAILED')
-                        error err
-                    }
-                }
-            }
-        }
         stage ('Get test result info and download') {
             steps {
                 script {
