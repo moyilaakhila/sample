@@ -114,6 +114,7 @@ pipeline {
             }
         }
     }
+    /*
 def sendRestReq(def url, def method = 'GET', def data = null, type = null, headerKey = null, headerVal = null) {
   try {
         def response = null
@@ -145,7 +146,7 @@ def sendRestReq(def url, def method = 'GET', def data = null, type = null, heade
     } catch(Exception ex) {
         return null
     }
-}
+} */
 def uploadLogsToGit (packageVersion) {
     sh(returnStdout: true, script: """if [ ! -d firebaseagentrepo ]; then mkdir firebaseagentrepo; fi""")
     dir ('firebaseagentrepo') {
@@ -179,4 +180,3 @@ def notifyBuild(String buildStatus = 'STARTED') {
     )
   }
  }
-}
