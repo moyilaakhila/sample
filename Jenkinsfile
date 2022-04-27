@@ -147,18 +147,6 @@ def sendRestReq(def url, def method = 'GET', def data = null, type = null, heade
         return null
     }
 }
-
-def notifyBuild(String buildStatus = 'STARTED') {
-    def details = ""
-    buildStatus = buildStatus ?: 'SUCCESS'
-    def subject = "Job '${env.JOB_NAME}': ${buildStatus} for the AGW artifact ID - ${packageVersion}"
-    if (buildStatus == 'STARTED') {
-        details = """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p><p>Check console output at &QUOT;<a href='${env.BUILD_URL}/console'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
-    } else if (buildStatus == 'SUCCESS') {
-        details = """<p>COMPLETED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p><p>Check console output at &QUOT;<a href='${env.BUILD_URL}/console'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
-    } else {
-        details = """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p><p>Check console output at &QUOT;<a href='${env.BUILD_URL}/console'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
-    }
     emailext (
         mimeType: 'text/html',
         subject: "[Jenkins] ${subject}",
