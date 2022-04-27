@@ -178,7 +178,8 @@ def sendRestReq(def url, def method = 'GET', def data = null, type = null, heade
     } catch(Exception ex) {
         return null
     }
-} */
+}
+*/
 def uploadLogsToGit (packageVersion) {
     sh(returnStdout: true, script: """if [ ! -d firebaseagentrepo ]; then mkdir firebaseagentrepo; fi""")
     dir ('firebaseagentrepo') {
