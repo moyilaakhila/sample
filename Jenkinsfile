@@ -48,6 +48,7 @@ pipeline {
                 parameters: [
                     [$class: 'StringParameterValue', name: 'ReleaseDate', value: "${currentDate}"]
                 ]
+            }
         }
         stage ('Test case ID,name,status') {
             steps {
