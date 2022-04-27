@@ -114,6 +114,7 @@ pipeline {
             }
         }
     }
+    /*
     def sendRestReq(def url, def method = 'GET', def data = null, type = null, headerKey = null, headerVal = null) {
   try {
         def response = null
@@ -178,6 +179,6 @@ def notifyBuild(String buildStatus = 'STARTED') {
         to: "${env.mailRecipients}"
     )
   }
- }
+ } */
 }
 
