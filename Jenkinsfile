@@ -49,7 +49,7 @@ pipeline {
                 ]
             }
         }
-        stage ('Testcase Id,Name,Status') {
+        stage ('Testcase Id, Name, Status') {
             steps {
                 script {
                     try {
@@ -112,32 +112,6 @@ pipeline {
                 }
             }
         }
-        stage ('Sync ABot test reports to Test Agent') {
-            steps {
-                script {
-                    try {
-                        sh "rm -rf ansible/agw_ansible_hosts"
-                        def ansibleInventory = """{all: {hosts: 172}}"""
-                        ansInvData = readYaml text: ansibleInventory
-                        ansInvData.all.hosts = testAgentIp
-                        writeYaml charset: '', data: ansInvData, file: 'ansible/agw_ansible_hosts'
-                        dir ('ansible') {
-                            sh "ansible-playbook transfer_test_result.yaml"
-                        }
-                        currentBuild.result = "SUCCESS"
-                    } catch (err) {
-                        println err
-                        deleteDir()
-                        notifyBuild('FAILED')
-                        error err
-                    } finally {
-                        notifyBuild(currentBuild.result)
-                        deleteDir()
-                    }
-                }
-            }
-        }
-    }
 }
 
 def ffArtifactURL (lastArtTimeStamp) {
@@ -229,7 +203,7 @@ def sendRestReq(def url, def method = 'GET', def data = null, type = null, heade
         return null
     }
 }
-
+/*
 def uploadLogsToGit (packageVersion) {
     sh(returnStdout: true, script: """if [ ! -d firebaseagentrepo ]; then mkdir firebaseagentrepo; fi""")
     dir ('firebaseagentrepo') {
@@ -244,7 +218,7 @@ def uploadLogsToGit (packageVersion) {
         }
     }
 }
-
+*/
 def notifyBuild(String buildStatus = 'STARTED') {
     def details = ""
     buildStatus = buildStatus ?: 'SUCCESS'
