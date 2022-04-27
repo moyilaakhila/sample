@@ -115,12 +115,3 @@ pipeline {
         }
     }
 }
-
-    emailext (
-        mimeType: 'text/html',
-        subject: "[Jenkins] ${subject}",
-        body: "${details}",
-        to: "${env.mailRecipients}"
-    )
-}
-}
