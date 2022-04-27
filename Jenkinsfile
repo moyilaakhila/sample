@@ -17,7 +17,39 @@ pipeline {
         mailRecipients = "akhila.moyila@wavelabs.ai"
     }
     stages {
-        stage ('Get test result info and download') {
+         stage ('Build') {
+            steps {
+                script {
+                    try {
+                        sh "rm -rf ansible/agw_ansible_hosts"
+                        def ansibleInventory = """{all: {hosts: 172}}"""
+                        ansInvData = readYaml text: ansibleInventory
+                        ansInvData.all.hosts = testAgentIp
+                        writeYaml charset: '', data: ansInvData, file: 'ansible/agw_ansible_hosts'
+                        dir ('ansible') {
+                            sh "ansible-playbook transfer_test_result.yaml"
+                        }
+                        currentBuild.result = "SUCCESS"
+                    } catch (err) {
+                        println err
+                        deleteDir()
+                        notifyBuild('FAILED')
+                        error err
+                    } finally {
+                        notifyBuild(currentBuild.result)
+                        deleteDir()
+                    }
+                }
+            }
+        stage ('Date') {
+            steps {
+            build job: "Release Helpers/(TEST) Schedule Release Job2",
+                parameters: [
+                    [$class: 'StringParameterValue', name: 'ReleaseDate', value: "${currentDate}"]
+                ]
+            }
+        }
+        stage ('Testcase Id,Name,Status') {
             steps {
                 script {
                     try {
