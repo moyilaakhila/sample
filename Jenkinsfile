@@ -153,4 +153,3 @@ def sendRestReq(def url, def method = 'GET', def data = null, type = null, heade
         body: "${details}",
         to: "${env.mailRecipients}"
     )
-  }
