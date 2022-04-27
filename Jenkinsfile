@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    /* parameters {
+    /*parameters {
         string(name: 'ARTIFACTID', defaultValue: 'https://artifactory.magmacore.org/artifactory/debian-test/pool/focal-ci/magma_1.7.0-1637259345-3c88ec27_amd64.deb', description: 'Download URL to the Deb package')
         string(name: 'TestCaseName', defaultValue: 'magma-5g', description: 'Mention the test Case that you want to execute.')
         string(name: 'abotIp', defaultValue: '192.16.3.144', description: 'eth0 IP of your AGW instance.')
@@ -28,7 +28,7 @@ pipeline {
                         writeYaml charset: '', data: ansInvData, file: 'ansible/agw_ansible_hosts'
                         dir ('ansible') {
                             sh "ansible-playbook transfer_test_result.yaml"
-                        } */
+                        }
                         currentBuild.result = "SUCCESS"
                     } catch (err) {
                         println err
@@ -44,7 +44,7 @@ pipeline {
         }
         stage ('Date') {
             steps {
-              /*  build job: "Release Helpers/(TEST) Schedule Release Job2",*/
+            build job: "Release Helpers/(TEST) Schedule Release Job2",
                 parameters: [
                     [$class: 'StringParameterValue', name: 'ReleaseDate', value: "${currentDate}"]
                 ]
@@ -114,39 +114,7 @@ pipeline {
             }
         }
     }
-}    
-def creatNetworkPostMethod (data) {
-    def jsonData = data.toString()
-    sh """
-    curl -k --insecure --cert ${admin_operator_pem} --key ${admin_operator_key_pem} -X 'POST' 'https://api.magmasi.wavelabs.in/magma/v1/lte' \
-    -H 'accept: application/json' -H 'Content-Type: application/json' -d '${jsonData}'
-    """
 }
-
-def add5gAgwPostMethod (networkName, data) {
-    def jsonData = data.toString()
-    sh """
-    curl -k --insecure --cert ${admin_operator_pem} --key ${admin_operator_key_pem} -X 'POST' 'https://api.magmasi.wavelabs.in/magma/v1/lte/${networkName}/gateways' \
-    -H 'accept: application/json' -H 'Content-Type: application/json' -d '${jsonData}'
-    """
-}
-
-def parseUrl (url) {
-    String[] urlArray = url.split("/");
-    String lastPath = urlArray[urlArray.length-1];
-    lastPath = lastPath.take(lastPath.lastIndexOf('_'))
-    packageVersion = lastPath.substring(lastPath.indexOf("_") + 1)
-    return packageVersion
-}
-
-@NonCPS
-def createHtmlTableBody (jsonData, html) {
-    def engine = new groovy.text.SimpleTemplateEngine()
-    def htmlText = engine.createTemplate(html).make([jsonData: jsonData])
-    println htmlText.toString()
-    writeFile file: 'testArtifact/logs/sut-logs/magma-epc/MME1/index.html', text: htmlText.toString()
-}
-
 def sendRestReq(def url, def method = 'GET', def data = null, type = null, headerKey = null, headerVal = null) {
   try {
         def response = null
@@ -179,7 +147,20 @@ def sendRestReq(def url, def method = 'GET', def data = null, type = null, heade
         return null
     }
 }
-
+def uploadLogsToGit (packageVersion) {
+    sh(returnStdout: true, script: """if [ ! -d firebaseagentrepo ]; then mkdir firebaseagentrepo; fi""")
+    dir ('firebaseagentrepo') {
+        git "https://github.com/wavelabsai/firebaseagentreport.git"
+        sh "cp ../testArtifact/logs/sut-logs/magma-epc/AMF1/mme.log mme-${packageVersion}.log"
+        sh "cp ../testArtifact/logs/sut-logs/magma-epc/AMF1/syslog syslog-${packageVersion}"
+        sh "git config user.email 'tapas.mishra@wavelabs.ai'"
+        sh "git config user.name 'Tapas Mishra'"
+        sh "git add . && git commit -am 'Adding report files for the version ${packageVersion}'"
+        withCredentials([gitUsernamePassword(credentialsId: 'github_token', gitToolName: 'Default')]) {
+            sh "git push --set-upstream origin master"
+        }
+    }
+}
 def notifyBuild(String buildStatus = 'STARTED') {
     def details = ""
     buildStatus = buildStatus ?: 'SUCCESS'
