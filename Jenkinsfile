@@ -29,8 +29,8 @@ pipeline {
                         lastArtTimeStamp = lastArtTimeStamp.data.latest_artifact_timestamp.toString()
 
                         if (ffArtifactURL (lastArtTimeStamp)) {
-                            sleep 10 */
-                        }
+                            sleep 10 
+                        } */
                         fileUrl = ffArtifactURL (lastArtTimeStamp)
                         timeout(5) {
                             waitUntil(initialRecurrencePeriod: 15000) {
