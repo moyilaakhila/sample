@@ -114,8 +114,7 @@ pipeline {
             }
         }
     }
-    /*
-    def sendRestReq(def url, def method = 'GET', def data = null, type = null, headerKey = null, headerVal = null) {
+def sendRestReq(def url, def method = 'GET', def data = null, type = null, headerKey = null, headerVal = null) {
   try {
         def response = null
         if (null == url || url.toString().trim().isEmpty()) return response
@@ -179,5 +178,5 @@ def notifyBuild(String buildStatus = 'STARTED') {
         to: "${env.mailRecipients}"
     )
   }
- } */
+ }
 }
