@@ -1,12 +1,12 @@
 pipeline {
-    agent none
-   /* parameters {
+    agent any
+    /* parameters {
         string(name: 'ARTIFACTID', defaultValue: 'https://artifactory.magmacore.org/artifactory/debian-test/pool/focal-ci/magma_1.7.0-1637259345-3c88ec27_amd64.deb', description: 'Download URL to the Deb package')
         string(name: 'TestCaseName', defaultValue: 'magma-5g', description: 'Mention the test Case that you want to execute.')
-        string(name: 'agwIp', defaultValue: '192.16.3.144', description: 'eth0 IP of your AGW instance.')
+        string(name: 'abotIp', defaultValue: '192.16.3.144', description: 'eth0 IP of your AGW instance.')
     } */
     options {
-        buildDiscarder(logRotator(daysToKeepStr: '2'));
+        buildDiscarder(logRotator(daysToKeepStr: '1'));
         disableConcurrentBuilds();
         timestamps()
     }
@@ -17,7 +17,7 @@ pipeline {
         mailRecipients = "akhila.moyila@wavelabs.ai"
     }
     stages {
-         stage ('Build') {
+        stage ('Build') {
             steps {
                 script {
                     try {
@@ -40,7 +40,8 @@ pipeline {
                         deleteDir()
                     }
                 }
-            }
+            }  
+        }
         stage ('Date') {
             steps {
             build job: "Release Helpers/(TEST) Schedule Release Job2",
@@ -49,20 +50,20 @@ pipeline {
                 ]
             }
         }
-        stage ('Testcase Id, Name, Status') {
+        stage ('Test case ID,name,status') {
             steps {
                 script {
                     try {
                         def lastArtTimeStampurl = "http://${abot_ip}:5000" + '/abot/api/v5/latest_artifact_name'
                         def lastArtTimeStampparams = ""
                         lastArtTimeStamp = sendRestReq(lastArtTimeStampurl, 'GET', lastArtTimeStampparams, 'application/json')
-                        /*lastArtTimeStamp = readJSON text: lastArtTimeStamp.content
+                        lastArtTimeStamp = readJSON text: lastArtTimeStamp.content
                         echo lastArtTimeStamp.data.latest_artifact_timestamp.toString()
                         lastArtTimeStamp = lastArtTimeStamp.data.latest_artifact_timestamp.toString()
 
                         if (ffArtifactURL (lastArtTimeStamp)) {
-                            sleep 10 
-                        } */
+                            sleep 10
+                        }
                         fileUrl = ffArtifactURL (lastArtTimeStamp)
                         timeout(5) {
                             waitUntil(initialRecurrencePeriod: 15000) {
@@ -112,130 +113,5 @@ pipeline {
                 }
             }
         }
-}
-
-def ffArtifactURL (lastArtTimeStamp) {
-    def lastArtUrlurl = "http://${abot_ip}:5000" + "/abot/api/v5/artifacts/download?artifact_name=${lastArtTimeStamp}"
-    def lastArtUrlparams = ""
-    lastArtUrl = sendRestReq(lastArtUrlurl, 'GET', lastArtUrlparams, 'application/json') 
-    lastArtUrl = readJSON text: lastArtUrl.content
-    println lastArtUrl.toString()
-    fileUrl = lastArtUrl.result.toString()
-    fileUrlstatus = lastArtUrl.status.toString()
-    if (fileUrlstatus == 'OK') {
-        return fileUrl
-    } 
-}
-
-def FeatueFileExecStatus (execStatus) {
-    while (execStatus) {
-        def execStatusurl = "http://${abot_ip}:5000" + '/abot/api/v5/execution_status'
-        def execStatusparams = ""
-        execStatus = sendRestReq(execStatusurl, 'GET', execStatusparams, 'application/json')
-        execStatus = readJSON text: execStatus.content
-        execStatus = execStatus.status
-        println "Executing Feature Files: ${params.TestCaseName}"
-        sleep time: 20, unit: 'SECONDS'
     }
-}
-
-def parseUrl (url) {
-    String[] urlArray = url.split("/");
-    String lastPath = urlArray[urlArray.length-1];
-    lastPath = lastPath.take(lastPath.lastIndexOf('_'))
-    packageVersion = lastPath.substring(lastPath.indexOf("_") + 1)
-    return packageVersion
-}
-
-@NonCPS
-def createHtmlTableBody (ffMappingData, jsonData, html, html1, packageVersion) {
-    ffMappingData.each { ffName, data ->
-        jsonData.feature_summary.result.data.each { 
-            if ( it.featureName == ffName ) {
-                it.featureName = it.featureName.minus(".feature")
-                it.mgmaTcType = data.Tctype
-                it.magmaTestId = data.testid
-                if ( it.features.status.equalsIgnoreCase("passed") ) {
-                    it.features.status = "PASS"
-                } else {
-                    it.features.status = "FAIL"
-                }
-            }
-        }
-    }
-    jsonData.feature_summary.result.data = jsonData.feature_summary.result.data.sort { it.mgmaTcType }
-    def engine = new groovy.text.SimpleTemplateEngine()
-    def htmlText = engine.createTemplate(html).make([jsonData: jsonData, packageVersion: packageVersion])
-    fullhtml = html1.toString() + htmlText.toString()
-    println fullhtml
-    writeFile file: 'testResult/index.html', text: fullhtml
-}
-
-def sendRestReq(def url, def method = 'GET', def data = null, type = null, headerKey = null, headerVal = null) {
-    try{
-        def response = null
-        if (null == url || url.toString().trim().isEmpty()) return response
-        method = method.toUpperCase()
-        switch (method) {
-            case 'GET':
-                response = httpRequest quiet: true, httpMode: method, ignoreSslErrors: true,  url: url, wrapAsMultipart: false
-                break
-            case 'POST':
-            case 'PUT':
-            case 'DELETE':
-                if (null == data) {
-                    response = httpRequest quiet: true, httpMode: method, ignoreSslErrors: true, url: url, wrapAsMultipart: false
-                } else if (headerKey != null && headerVal != null){
-                    // if (null == type || type.toString().trim().isEmpty()) return response
-                    response = httpRequest quiet: true, httpMode: method, ignoreSslErrors: true, url: url, requestBody: "${data}", wrapAsMultipart: false, customHeaders: [[maskValue: false, name: 'Content-Type', value: type], [maskValue: false, name: "${headerKey}", value: "${headerVal}"]]
-                }
-                else {
-                    if (null == type || type.toString().trim().isEmpty()) return response
-                    response = httpRequest quiet: true, httpMode: method, ignoreSslErrors: true, url: url, requestBody: "${data}", wrapAsMultipart: false, customHeaders: [[maskValue: false, name: 'Content-Type', value: type]]
-                }
-                break
-            default:
-                break
-                return response
-        }
-        return response
-    } catch(Exception ex) {
-        return null
-    }
-}
-
-def uploadLogsToGit (packageVersion) {
-    sh(returnStdout: true, script: """if [ ! -d firebaseagentrepo ]; then mkdir firebaseagentrepo; fi""")
-    dir ('firebaseagentrepo') {
-        git "https://github.com/wavelabsai/firebaseagentreport.git"
-        sh "cp ../testArtifact/logs/sut-logs/magma-epc/AMF1/mme.log mme-${packageVersion}.log"
-        sh "cp ../testArtifact/logs/sut-logs/magma-epc/AMF1/syslog syslog-${packageVersion}"
-        sh "git config user.email 'tapas.mishra@wavelabs.ai'"
-        sh "git config user.name 'Tapas Mishra'"
-        sh "git add . && git commit -am 'Adding report files for the version ${packageVersion}'"
-        withCredentials([gitUsernamePassword(credentialsId: 'github_token', gitToolName: 'Default')]) {
-            sh "git push --set-upstream origin master"
-        }
-    }
-}
-
-def notifyBuild(String buildStatus = 'STARTED') {
-    def details = ""
-    buildStatus = buildStatus ?: 'SUCCESS'
-
-    def subject = "Job '${env.JOB_NAME}': ${buildStatus} for the AGW artifact ID - ${packageVersion}"
-    if (buildStatus == 'STARTED') {
-        details = """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p><p>Check console output at &QUOT;<a href='${env.BUILD_URL}/console'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
-    } else if (buildStatus == 'SUCCESS') {
-        details = """<p>COMPLETED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p><p>Check console output at &QUOT;<a href='${env.BUILD_URL}/console'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
-    } else {
-        details = """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p><p>Check console output at &QUOT;<a href='${env.BUILD_URL}/console'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
-    }
-    emailext (
-        mimeType: 'text/html',
-        subject: "[Jenkins] ${subject}",
-        body: "${details}",
-        to: "${env.mailRecipients}"
-    )
-}
 }
