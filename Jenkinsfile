@@ -238,3 +238,4 @@ def notifyBuild(String buildStatus = 'STARTED') {
         to: "${env.mailRecipients}"
     )
 }
+}
