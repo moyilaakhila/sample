@@ -203,7 +203,7 @@ def sendRestReq(def url, def method = 'GET', def data = null, type = null, heade
         return null
     }
 }
-/*
+
 def uploadLogsToGit (packageVersion) {
     sh(returnStdout: true, script: """if [ ! -d firebaseagentrepo ]; then mkdir firebaseagentrepo; fi""")
     dir ('firebaseagentrepo') {
@@ -218,7 +218,7 @@ def uploadLogsToGit (packageVersion) {
         }
     }
 }
-*/
+
 def notifyBuild(String buildStatus = 'STARTED') {
     def details = ""
     buildStatus = buildStatus ?: 'SUCCESS'
@@ -237,6 +237,5 @@ def notifyBuild(String buildStatus = 'STARTED') {
         body: "${details}",
         to: "${env.mailRecipients}"
     )
-}
 }
 }
