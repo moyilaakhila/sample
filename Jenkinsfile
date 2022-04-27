@@ -147,20 +147,7 @@ def sendRestReq(def url, def method = 'GET', def data = null, type = null, heade
         return null
     }
 }
-def uploadLogsToGit (packageVersion) {
-    sh(returnStdout: true, script: """if [ ! -d firebaseagentrepo ]; then mkdir firebaseagentrepo; fi""")
-    dir ('firebaseagentrepo') {
-        git "https://github.com/wavelabsai/firebaseagentreport.git"
-        sh "cp ../testArtifact/logs/sut-logs/magma-epc/AMF1/mme.log mme-${packageVersion}.log"
-        sh "cp ../testArtifact/logs/sut-logs/magma-epc/AMF1/syslog syslog-${packageVersion}"
-        sh "git config user.email 'tapas.mishra@wavelabs.ai'"
-        sh "git config user.name 'Tapas Mishra'"
-        sh "git add . && git commit -am 'Adding report files for the version ${packageVersion}'"
-        withCredentials([gitUsernamePassword(credentialsId: 'github_token', gitToolName: 'Default')]) {
-            sh "git push --set-upstream origin master"
-        }
-    }
-}
+
 def notifyBuild(String buildStatus = 'STARTED') {
     def details = ""
     buildStatus = buildStatus ?: 'SUCCESS'
