@@ -1,0 +1,1555 @@
+{
+  "feature_summary": {
+    "result": {
+      "artifactId": "27Apr2022-01:00:02.670864@magma-5G",
+      "data": [
+        {
+          "featureId": "Session_Modification_procedure_IPv4.feature",
+          "featureName": "Session_Modification_procedure_IPv4.feature",
+          "features": {
+            "duration": 16.50621,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 18,
+            "skipped": 0,
+            "total": 18
+          }
+        },
+        {
+          "featureId": "NG_Setup_Failure_Unknown_PLMN.feature",
+          "featureName": "NG_Setup_Failure_Unknown_PLMN.feature",
+          "features": {
+            "duration": 13.056855,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 13,
+            "skipped": 0,
+            "total": 13
+          }
+        },
+        {
+          "featureId": "multi_PDU_diff_DNN.feature",
+          "featureName": "multi_PDU_diff_DNN.feature",
+          "features": {
+            "duration": 30.81693,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 55,
+            "skipped": 0,
+            "total": 55
+          }
+        },
+        {
+          "featureId": "Simple_subcriber_mgmt.feature",
+          "featureName": "Simple_subcriber_mgmt.feature",
+          "features": {
+            "duration": 26.914091,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 40,
+            "skipped": 0,
+            "total": 40
+          }
+        },
+        {
+          "featureId": "Initial_Reg_Dereg_scale.feature",
+          "featureName": "Initial_Reg_Dereg_scale.feature",
+          "features": {
+            "duration": 15.009765,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 39,
+            "skipped": 0,
+            "total": 39
+          }
+        },
+        {
+          "featureId": "NG_SETUP_gnb2_gnb1.feature",
+          "featureName": "NG_SETUP_gnb2_gnb1.feature",
+          "features": {
+            "duration": 13.3705,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 17,
+            "skipped": 0,
+            "total": 17
+          }
+        },
+        {
+          "featureId": "Initial_Registration_with_GUTI.feature",
+          "featureName": "Initial_Registration_with_GUTI.feature",
+          "features": {
+            "duration": 22.502901,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 47,
+            "skipped": 0,
+            "total": 47
+          }
+        },
+        {
+          "featureId": "OCN_supports_5Qi.feature",
+          "featureName": "OCN_supports_5Qi.feature",
+          "features": {
+            "duration": 16.953663,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 48,
+            "skipped": 0,
+            "total": 48
+          }
+        },
+        {
+          "featureId": "Loop_Subsequent_GUTI_with_single_subscriber.feature",
+          "featureName": "Loop_Subsequent_GUTI_with_single_subscriber.feature",
+          "features": {
+            "duration": 57.865715,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 192,
+            "skipped": 0,
+            "total": 192
+          }
+        },
+        {
+          "featureId": "5G_reg_reject_invalidTAC.feature",
+          "featureName": "5G_reg_reject_invalidTAC.feature",
+          "features": {
+            "duration": 13.336756,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 17,
+            "skipped": 0,
+            "total": 17
+          }
+        },
+        {
+          "featureId": "5G_Registration_reject.feature",
+          "featureName": "5G_Registration_reject.feature",
+          "features": {
+            "duration": 13.29642,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 18,
+            "skipped": 0,
+            "total": 18
+          }
+        },
+        {
+          "featureId": "Verify_auth_reject_cause26_Non5G_auth_unaccept.feature",
+          "featureName": "Verify_auth_reject_cause26_Non5G_auth_unaccept.feature",
+          "features": {
+            "duration": 16.463753,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 16,
+            "skipped": 0,
+            "total": 16
+          }
+        },
+        {
+          "featureId": "verify_T3560_expiry_authentication.feature",
+          "featureName": "verify_T3560_expiry_authentication.feature",
+          "features": {
+            "duration": 44.15935,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 20,
+            "skipped": 0,
+            "total": 20
+          }
+        },
+        {
+          "featureId": "OCN_supports_basic_control_functions.feature",
+          "featureName": "OCN_supports_basic_control_functions.feature",
+          "features": {
+            "duration": 23.038313,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 49,
+            "skipped": 0,
+            "total": 49
+          }
+        },
+        {
+          "featureId": "5G_UE_Initiated_Deregistration.feature",
+          "featureName": "5G_UE_Initiated_Deregistration.feature",
+          "features": {
+            "duration": 27.269268,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 40,
+            "skipped": 0,
+            "total": 40
+          }
+        },
+        {
+          "featureId": "Mobility_Based_Registration.feature",
+          "featureName": "Mobility_Based_Registration.feature",
+          "features": {
+            "duration": 21.842237,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 48,
+            "skipped": 0,
+            "total": 48
+          }
+        },
+        {
+          "featureId": "multiSession_1invalid_withinvalid_ID.feature",
+          "featureName": "multiSession_1invalid_withinvalid_ID.feature",
+          "features": {
+            "duration": 96.831245,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 65,
+            "skipped": 0,
+            "total": 65
+          }
+        },
+        {
+          "featureId": "multiSession_with1Invalid_session.feature",
+          "featureName": "multiSession_with1Invalid_session.feature",
+          "features": {
+            "duration": 16.310875,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 50,
+            "skipped": 0,
+            "total": 50
+          }
+        },
+        {
+          "featureId": "multiSession_1invalid_withinvalid_DNN.feature",
+          "featureName": "multiSession_1invalid_withinvalid_DNN.feature",
+          "features": {
+            "duration": 20.22647,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 43,
+            "skipped": 0,
+            "total": 43
+          }
+        },
+        {
+          "featureId": "Valid_UE_Invalid_UE.feature",
+          "featureName": "Valid_UE_Invalid_UE.feature",
+          "features": {
+            "duration": 24.541967,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 44,
+            "skipped": 4,
+            "total": 49
+          }
+        },
+        {
+          "featureId": "Verify_T3592_expiry_PDUrelcmd_again_noDreg.feature",
+          "featureName": "Verify_T3592_expiry_PDUrelcmd_again_noDreg.feature",
+          "features": {
+            "duration": 87.886604,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 35,
+            "skipped": 0,
+            "total": 35
+          }
+        },
+        {
+          "featureId": "Verify_service_reject_wrong_TMSI.feature",
+          "featureName": "Verify_service_reject_wrong_TMSI.feature",
+          "features": {
+            "duration": 13.684188,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 28,
+            "skipped": 0,
+            "total": 28
+          }
+        },
+        {
+          "featureId": "Identification_Procedure.feature",
+          "featureName": "Identification_Procedure.feature",
+          "features": {
+            "duration": 16.737518,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 18,
+            "skipped": 0,
+            "total": 18
+          }
+        },
+        {
+          "featureId": "OCN_access_service_predefined_loc.feature",
+          "featureName": "OCN_access_service_predefined_loc.feature",
+          "features": {
+            "duration": 21.348202,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 48,
+            "skipped": 0,
+            "total": 48
+          }
+        },
+        {
+          "featureId": "multiSession_1invalid_withMissing_DNN.feature",
+          "featureName": "multiSession_1invalid_withMissing_DNN.feature",
+          "features": {
+            "duration": 20.54585,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 47,
+            "skipped": 0,
+            "total": 47
+          }
+        },
+        {
+          "featureId": "N1N2MessageSubscribe_service_operation.feature",
+          "featureName": "N1N2MessageSubscribe_service_operation.feature",
+          "features": {
+            "duration": 16.23193,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 16,
+            "skipped": 0,
+            "total": 16
+          }
+        },
+        {
+          "featureId": "Dereg_switchOff_GUTI.feature",
+          "featureName": "Dereg_switchOff_GUTI.feature",
+          "features": {
+            "duration": 20.487658,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 46,
+            "skipped": 0,
+            "total": 46
+          }
+        },
+        {
+          "featureId": "CPE_Relocated_One_Location_To_Another.feature",
+          "featureName": "CPE_Relocated_One_Location_To_Another.feature",
+          "features": {
+            "duration": 20.419472,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 51,
+            "skipped": 0,
+            "total": 51
+          }
+        },
+        {
+          "featureId": "UE_Authentication.feature",
+          "featureName": "UE_Authentication.feature",
+          "features": {
+            "duration": 18.858242,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 26,
+            "skipped": 0,
+            "total": 26
+          }
+        },
+        {
+          "featureId": "Periodic_Registration.feature",
+          "featureName": "Periodic_Registration.feature",
+          "features": {
+            "duration": 40.62678,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 58,
+            "skipped": 0,
+            "total": 58
+          }
+        },
+        {
+          "featureId": "AMF_Initiated_AN_Release_Procedure.feature",
+          "featureName": "AMF_Initiated_AN_Release_Procedure.feature",
+          "features": {
+            "duration": 18.540438,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 18,
+            "skipped": 22,
+            "total": 41
+          }
+        },
+        {
+          "featureId": "verify_T3570_expiry_Idenity_req_resend.feature",
+          "featureName": "verify_T3570_expiry_Idenity_req_resend.feature",
+          "features": {
+            "duration": 15.235995,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 15,
+            "skipped": 22,
+            "total": 38
+          }
+        },
+        {
+          "featureId": "Verify_T3550_Expiry_Reg_Complete_Accept_Failure.feature",
+          "featureName": "Verify_T3550_Expiry_Reg_Complete_Accept_Failure.feature",
+          "features": {
+            "duration": 15.296302,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 15,
+            "skipped": 14,
+            "total": 30
+          }
+        },
+        {
+          "featureId": "Verify_NG_setup_with_sst_non01.feature",
+          "featureName": "Verify_NG_setup_with_sst_non01.feature",
+          "features": {
+            "duration": 13.593018,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 11,
+            "skipped": 0,
+            "total": 11
+          }
+        },
+        {
+          "featureId": "5G_Multi_PDU_Session.feature",
+          "featureName": "5G_Multi_PDU_Session.feature",
+          "features": {
+            "duration": 27.54891,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 17,
+            "skipped": 36,
+            "total": 54
+          }
+        },
+        {
+          "featureId": "5G_Hybrid_GUTI_PDU.feature",
+          "featureName": "5G_Hybrid_GUTI_PDU.feature",
+          "features": {
+            "duration": 15.521005,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 15,
+            "skipped": 37,
+            "total": 53
+          }
+        },
+        {
+          "featureId": "Loop_Subsequent_SUCI_with_single_subscriber.feature",
+          "featureName": "Loop_Subsequent_SUCI_with_single_subscriber.feature",
+          "features": {
+            "duration": 15.37123,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 15,
+            "skipped": 123,
+            "total": 139
+          }
+        },
+        {
+          "featureId": "5G_reg_reject_UEsecurity_mismatch.feature",
+          "featureName": "5G_reg_reject_UEsecurity_mismatch.feature",
+          "features": {
+            "duration": 15.338473,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 15,
+            "skipped": 1,
+            "total": 17
+          }
+        },
+        {
+          "featureId": "PDU_SessionEstb_accept_Dereg.feature",
+          "featureName": "PDU_SessionEstb_accept_Dereg.feature",
+          "features": {
+            "duration": 18.441425,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 19,
+            "skipped": 29,
+            "total": 49
+          }
+        },
+        {
+          "featureId": "PDU_session_estbping_acc_deregister.feature",
+          "featureName": "PDU_session_estbping_acc_deregister.feature",
+          "features": {
+            "duration": 18.653137,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 19,
+            "skipped": 31,
+            "total": 51
+          }
+        },
+        {
+          "featureId": "PDU_Session_Release.feature",
+          "featureName": "PDU_Session_Release.feature",
+          "features": {
+            "duration": 22.54682,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 38,
+            "skipped": 0,
+            "total": 38
+          }
+        },
+        {
+          "featureId": "UE_Initiated_AN_Release_Procedure.feature",
+          "featureName": "UE_Initiated_AN_Release_Procedure.feature",
+          "features": {
+            "duration": 18.460865,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 18,
+            "skipped": 24,
+            "total": 43
+          }
+        },
+        {
+          "featureId": "5G_Initial_Registration.feature",
+          "featureName": "5G_Initial_Registration.feature",
+          "features": {
+            "duration": 27.490993,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 16,
+            "skipped": 23,
+            "total": 40
+          }
+        },
+        {
+          "featureId": "verify_T3560_expiry_resend_security_CMD.feature",
+          "featureName": "verify_T3560_expiry_resend_security_CMD.feature",
+          "features": {
+            "duration": 15.8877,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 15,
+            "skipped": 9,
+            "total": 25
+          }
+        },
+        {
+          "featureId": "PDU_Reject_invalid_Session_type.feature",
+          "featureName": "PDU_Reject_invalid_Session_type.feature",
+          "features": {
+            "duration": 16.158978,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 16,
+            "skipped": 16,
+            "total": 33
+          }
+        },
+        {
+          "featureId": "Reg_with_guti_validUE1_invalidUE2.feature",
+          "featureName": "Reg_with_guti_validUE1_invalidUE2.feature",
+          "features": {
+            "duration": 15.919328,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 15,
+            "skipped": 39,
+            "total": 55
+          }
+        },
+        {
+          "featureId": "5G_Registration_PDU_Session_Establishment.feature",
+          "featureName": "5G_Registration_PDU_Session_Establishment.feature",
+          "features": {
+            "duration": 15.383242,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 16,
+            "skipped": 29,
+            "total": 46
+          }
+        },
+        {
+          "featureId": "NG_Setup_Request_Magma.feature",
+          "featureName": "NG_Setup_Request_Magma.feature",
+          "features": {
+            "duration": 13.395913,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 13,
+            "skipped": 0,
+            "total": 13
+          }
+        },
+        {
+          "featureId": "Deregistration_before_reg_complete.feature",
+          "featureName": "Deregistration_before_reg_complete.feature",
+          "features": {
+            "duration": 27.67164,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 16,
+            "skipped": 20,
+            "total": 37
+          }
+        },
+        {
+          "featureId": "Skip_UeContextReq_verify_pdu_est_flow.feature",
+          "featureName": "Skip_UeContextReq_verify_pdu_est_flow.feature",
+          "features": {
+            "duration": 27.878708,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 31,
+            "skipped": 0,
+            "total": 31
+          }
+        },
+        {
+          "featureId": "NAS_Security_Procedure.feature",
+          "featureName": "NAS_Security_Procedure.feature",
+          "features": {
+            "duration": 18.837248,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 16,
+            "skipped": 7,
+            "total": 24
+          }
+        },
+        {
+          "featureId": "Skip_UeContextReq_verify_UE_inactivity_flow.feature",
+          "featureName": "Skip_UeContextReq_verify_UE_inactivity_flow.feature",
+          "features": {
+            "duration": 27.608643,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 16,
+            "skipped": 11,
+            "total": 28
+          }
+        },
+        {
+          "featureId": "Verify_service_reject_after_max_retry_registration.feature",
+          "featureName": "Verify_service_reject_after_max_retry_registration.feature",
+          "features": {
+            "duration": 15.443676,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 15,
+            "skipped": 14,
+            "total": 30
+          }
+        },
+        {
+          "featureId": "Verify_Service_mode_reject_unspecified.feature",
+          "featureName": "Verify_Service_mode_reject_unspecified.feature",
+          "features": {
+            "duration": 15.463734,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 15,
+            "skipped": 7,
+            "total": 23
+          }
+        },
+        {
+          "featureId": "Dereg_switchOff_suci.feature",
+          "featureName": "Dereg_switchOff_suci.feature",
+          "features": {
+            "duration": 27.704374,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 16,
+            "skipped": 20,
+            "total": 37
+          }
+        },
+        {
+          "featureId": "Verify_T3592_expiry_PDUrelcmd_again_with_Dereg.feature",
+          "featureName": "Verify_T3592_expiry_PDUrelcmd_again_with_Dereg.feature",
+          "features": {
+            "duration": 16.113352,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 15,
+            "skipped": 20,
+            "total": 36
+          }
+        },
+        {
+          "featureId": "PDU_est_flow_without_ue_context.feature",
+          "featureName": "PDU_est_flow_without_ue_context.feature",
+          "features": {
+            "duration": 15.61178,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 16,
+            "skipped": 29,
+            "total": 46
+          }
+        },
+        {
+          "featureId": "PDU_rejection_invalid_DNN.feature",
+          "featureName": "PDU_rejection_invalid_DNN.feature",
+          "features": {
+            "duration": 15.712233,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 16,
+            "skipped": 16,
+            "total": 33
+          }
+        },
+        {
+          "featureId": "Verify_Service_req_change_RAN_UE_NGAP_ID_servicereq.feature",
+          "featureName": "Verify_Service_req_change_RAN_UE_NGAP_ID_servicereq.feature",
+          "features": {
+            "duration": 15.604016,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 15,
+            "skipped": 14,
+            "total": 30
+          }
+        },
+        {
+          "featureId": "5G_Initial_registration_gNB1_gNB2.feature",
+          "featureName": "5G_Initial_registration_gNB1_gNB2.feature",
+          "features": {
+            "duration": 15.885699,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 15,
+            "skipped": 30,
+            "total": 46
+          }
+        },
+        {
+          "featureId": "Verify_Service_Mode_Reject_cause23.feature",
+          "featureName": "Verify_Service_Mode_Reject_cause23.feature",
+          "features": {
+            "duration": 15.952536,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 15,
+            "skipped": 7,
+            "total": 23
+          }
+        },
+        {
+          "featureId": "5G_authentication_reject_UE_sec_cap.feature",
+          "featureName": "5G_authentication_reject_UE_sec_cap.feature",
+          "features": {
+            "duration": 18.670223,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 12,
+            "skipped": 3,
+            "total": 16
+          }
+        },
+        {
+          "featureId": "multi_gNB_Registration.feature",
+          "featureName": "multi_gNB_Registration.feature",
+          "features": {
+            "duration": 22.927036,
+            "status": "passed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 0,
+            "passed": 1,
+            "total": 1
+          },
+          "steps": {
+            "failed": 0,
+            "passed": 46,
+            "skipped": 0,
+            "total": 46
+          }
+        },
+        {
+          "featureId": "5G_Initial_Reg_Authentication_Failure.feature",
+          "featureName": "5G_Initial_Reg_Authentication_Failure.feature",
+          "features": {
+            "duration": 19.189674,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 12,
+            "skipped": 3,
+            "total": 16
+          }
+        },
+        {
+          "featureId": "5G_Authentication_reject_cause24_scMreject.feature",
+          "featureName": "5G_Authentication_reject_cause24_scMreject.feature",
+          "features": {
+            "duration": 19.254507,
+            "status": "failed"
+          },
+          "load": {
+            "Concurrency": 1,
+            "UEs": 1
+          },
+          "scenario": {
+            "failed": 1,
+            "passed": 0,
+            "total": 1
+          },
+          "steps": {
+            "failed": 1,
+            "passed": 12,
+            "skipped": 3,
+            "total": 16
+          }
+        }
+      ],
+      "totalFeatures": {
+        "totalFeaturesduration": {
+          "totalFeaturesdurationNumber": 1461.4526,
+          "totalFeaturesdurationPercentage": 100
+        },
+        "totalFeaturesstatus": {
+          "totalFeaturesstatusNumber": 65,
+          "totalFeaturesstatusPercentage": 52.307693
+        }
+      },
+      "totalScenarios": {
+        "totalScenariosFailed": {
+          "totalScenariosFailedNumber": 31,
+          "totalScenariosFailedPercentage": 47.692307
+        },
+        "totalScenariosPassed": {
+          "totalScenariosPassedNumber": 34,
+          "totalScenariosPassedPercentage": 52.307693
+        },
+        "totalScenariosTotal": {
+          "totalScenariosTotalNumber": 65,
+          "totalScenariosTotalPercentage": 100
+        }
+      },
+      "totalSteps": {
+        "totalStepsFailed": {
+          "totalStepsFailedNumber": 31,
+          "totalStepsFailedPercentage": 1.2152097
+        },
+        "totalStepsPassed": {
+          "totalStepsPassedNumber": 1857,
+          "totalStepsPassedPercentage": 72.79498
+        },
+        "totalStepsPending": {
+          "totalStepsPendingNumber": 0,
+          "totalStepsPendingPercentage": 0
+        },
+        "totalStepsSkipped": {
+          "totalStepsSkippedNumber": 663,
+          "totalStepsSkippedPercentage": 25.989807
+        },
+        "totalStepsTotal": {
+          "totalStepsTotalNumber": 2551,
+          "totalStepsTotalPercentage": 100
+        },
+        "totalStepsUndefined": {
+          "totalStepsUndefinedNumber": 0,
+          "totalStepsUndefinedPercentage": 0
+        }
+      }
+    }
+  },
+  "status": "OK"
+}
