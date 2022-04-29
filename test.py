@@ -38,6 +38,27 @@ ExcelApp = win32.Dispatch('Excel.Application')
 ExcelApp.Visible = True
 
 wb = ExcelApp.Workbooks.Add()
-ws = wb.Worksheets(1)
+ws = wb.Worksheets(2)
 
 header_labels = ('id', 'name', 'duration_features', 'status_features', 'Concurrency_load', 'UEs_load', 'failed_scenario', 'passed_scenario', 'total_scenario', 'failed_steps', 'passed_steps', 'skipped_steps', 'total_steps')
+
+
+# insert header labels
+for indx, val in enumerate(header_labels):
+    ws.Cells(1, indx + 1).Value = val
+
+# insert Records
+row_tracker = 2
+column_size = len(header_labels)
+
+for row in rows:
+    ws.Range(
+        ws.Cells(row_tracker, 1),
+        ws.Cells(row_tracker, column_size)
+    ).value = row
+    row_tracker += 1
+
+wb.SaveAs(os.path.join(os.getcwd(), 'Json output.xlsx'), 51)
+wb.Close()
+ExcelApp.Quit()
+ExcelApp = None
